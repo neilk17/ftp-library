@@ -8,7 +8,7 @@ import pyfiglet
 from ftp import FTP
 
 HOST_NAME = "10.246.251.93"
-LOG_FILE = "log1.txt"
+LOG_FILE = "logs/log1.txt"
 USER_NAME = "cs472"
 PASSWORD = "hw2ftp"
 PORT = 21
@@ -57,10 +57,11 @@ def menu(my_ftp):
             my_ftp.list()
         if cmd == 'pwd':
             my_ftp.working_directory()
-        if cmd == 'logout':
+        if cmd == 'logout' or cmd == 'quit':
             my_ftp.close()
-        elif cmd == 'quit':
             break
+        else:
+            print("Invalid command")
            
 
 def get_input():
