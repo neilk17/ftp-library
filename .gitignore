@@ -4,3 +4,5 @@ venv/
 .venv/
 
 log1.txt
+
+.vscode
