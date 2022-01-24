@@ -5,13 +5,8 @@ Author: Neil Kanakia
 Main client application to run FTP Library
 """
 import pyfiglet
+import sys
 from ftp import FTP
-
-HOST_NAME = "10.246.251.93"
-LOG_FILE = "logs/log1.txt"
-USER_NAME = "cs472"
-PASSWORD = "hw2ftp"
-PORT = 21
 
 
 def get_input_int():
@@ -34,35 +29,43 @@ def menu(my_ftp):
         str1 = "_____________________________________________________\n"\
                 "Login to server: login\n"\
                 "Get help: help\n"\
+                "Get system info: syst\n"\
                 "View files in server: ls\n"\
                 "Print working directory: pwd\n"\
+                "Change working directory: cwd + 'path'\n"\
                 "Close connection: logout\n"\
                 "Quit application: quit\n"\
                 "_____________________________________________________"
 
-        print(str1)
         usr_input = get_input_string().lower().split(' ')
         cmd = usr_input[0]
-
-        if cmd == 'login':
-            print("Enter username:")
-            user_name = get_input_string()
-            print("Enter password:")
-            passwd = get_input_string()
-            response = my_ftp.login(user_name, passwd)
-            print(response)
+        if cmd == 'cwd':
+            my_ftp.change_working_directory(usr_input[-1])
         if cmd == 'help':
+            print(str1)
             my_ftp.get_help()
+        if cmd == 'login':
+            login()
         if cmd == 'ls':
-            my_ftp.list()
+            my_ftp.get_list()
         if cmd == 'pwd':
             my_ftp.working_directory()
+        if cmd == 'pasv':
+            my_ftp.make_pasv()
+        if cmd == 'syst':
+            my_ftp.get_syst()
         if cmd == 'logout' or cmd == 'quit':
             my_ftp.close()
             break
-        else:
-            print("Invalid command")
            
+def login(my_ftp):
+    print("Enter username (Leave blank if anonymous):")
+    user_name = get_input_string()
+    print("Enter password (Leave blank if not required):")
+    passwd = get_input_string()
+    response = my_ftp.login(user_name, passwd)
+    print(response)
+
 
 def get_input():
     '''
@@ -93,28 +96,24 @@ def main():
  
     welcome_message = pyfiglet.figlet_format("FTP client", font="digital")
     print(welcome_message)
-    print("Enter hostname: ")
-    # TODO: Temporary, change to get input from user
-    # host_name = get_input_string()
-    # log_file = get_input_string()
-    # my_ftp = FTP(host_name, log_file)
+    args = sys.argv
+    arg_len = len(args)
+    if(arg_len > 3):
+        print("Hostname and logfile arguments must be passed.")
+        sys.exit(0)
 
-    ftp_obj = FTP(HOST_NAME, LOG_FILE)
-
-    # Get login information
-    print("Enter username (Leave empty to login anonymously):")
-
-    # TODO: Temporary, change to get input from user
-    # user_name = get_input_string()
-    user_name = USER_NAME
-    print("Enter password:")
-
-    # TODO: Temporary, change to get input from user
-    # passwd = get_input_string()
-    passwd = PASSWORD
-    response = ftp_obj.login(user_name, passwd)
-    print(response)
+    host_name, port = '', 0
+    if(arg_len == 4):
+        port = args[-1]
+        log_file = args[-2]
+        host_name = args[-3]
+    if(arg_len == 3):
+        port = 21
+        log_file = args[-1]
+        host_name = args[-2]
     
+    ftp_obj = FTP(host_name, log_file, port)
+    login(ftp_obj)
     menu(my_ftp=ftp_obj)
 
 
