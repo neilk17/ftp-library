@@ -1,21 +1,6 @@
 
 # Neil Kanakia
 
-Feb 14th, 2022
-CS472: hw3
-
-# Questions
-
-## Do you think that someone could hack into your FTP server? Why or why not? Through what methods?
-
-Yes, an FTP server is easy to hack since it transfers all its data in plain text and is unencrypted, anyone could use a packet sniffer
-such as wireshark and be able to read the username and password and gain access to the server.
-
-## EXTRA CREDIT: Critique how FTP solves the problem of file transfer – what is good? What is bad? What is weird?
-
-FTP solves the problem of sending files easily but is not easy to use, due to its nature of having a connection/command channel
-and a separate channel to transfer data.
-
 # Setup
 
 Run 'make' file in command line
