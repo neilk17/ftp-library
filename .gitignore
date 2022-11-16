@@ -1,1 +1,6 @@
-README.pdf
+./server/__pycache__
+./server/venv/
+
+./client/__pycache__
+./client/README.pdf
+./client/venv/
